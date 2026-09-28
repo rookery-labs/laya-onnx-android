@@ -1,0 +1,24 @@
+[package]
+name = "laya-onnx"
+version = "0.1.0"
+edition = "2021"
+description = "System 1 Reflex Engine for Corvus Android - Rust JNI, mmBERT tokenization, and ONNX Mobile runtime"
+authors = ["Rookery Labs"]
+license = "Apache-2.0"
+
+[lib]
+name = "laya_onnx"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+jni = { version = "0.21", default-features = false }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokenizers = { version = "0.20", default-features = false, features = ["unstable_wasm"] }
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "tokenization_bench"
+harness = false
