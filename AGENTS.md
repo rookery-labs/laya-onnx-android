@@ -19,5 +19,13 @@ This repository encapsulates the System 1 reflex decision engine (< 40 ms) for C
 3. **Calibrated Softmax & NOUL Safety Gate (`specs/calibration-contract.md`):**
    - Soften raw model logits via temperature scaling $T > 0$.
    - Enforce NOUL gate: if $\max_i(p_i) < 0.65$, trigger `noul = true` and `choice = -1` for immediate System 2 escalation.
-4. **Testing Protocol:**
-   - Run `cargo test` and `cargo bench` before every commit.
+4. **Branch & Worktree Isolation (Sanctuary of `main`):**
+   - Strictly prohibit direct commits or pushes on `main`.
+   - All work must be conducted in dedicated branches (`feat/...`, `fix/...`) within an isolated worktree (`just worktree-add`).
+   - Merge only when `cargo test`, `cargo clippy --all-targets -- -D warnings`, and `cargo fmt --check` are 100% green.
+5. **Renovate Automated Dependencies & Zero-Touch Release:**
+   - Automated dependency PRs (patch/minor) merge automatically to `main` upon passing all Cargo tests, fmt, and clippy gates.
+   - Merges to `main` automatically publish a new semantic release and tag.
+6. **Testing Protocol:**
+   - Run `cargo test`, `cargo clippy --all-targets -- -D warnings`, and `cargo fmt --check` before every commit.
+
