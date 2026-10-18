@@ -1,6 +1,6 @@
 use laya_onnx::{
-    calibrate_logits, evaluate_decision, LayaTokenizer, CLS_TOKEN_ID, MASK_TOKEN_ID,
-    PAD_TOKEN_ID, SEP_TOKEN_ID,
+    calibrate_logits, evaluate_decision, LayaTokenizer, CLS_TOKEN_ID, MASK_TOKEN_ID, PAD_TOKEN_ID,
+    SEP_TOKEN_ID,
 };
 use std::time::Instant;
 

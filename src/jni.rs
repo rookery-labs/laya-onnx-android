@@ -27,6 +27,12 @@ pub extern "system" fn Java_dev_corvus_laya_LayaNativeEngine_nativeInitTokenizer
     Box::into_raw(tokenizer) as jlong
 }
 
+/// Frees the native tokenizer instance.
+///
+/// # Safety
+///
+/// `handle` must be a valid pointer returned by `Java_dev_corvus_laya_LayaNativeEngine_nativeInitTokenizer`
+/// or 0. Must not be called more than once with the same non-zero handle.
 #[no_mangle]
 pub unsafe extern "system" fn Java_dev_corvus_laya_LayaNativeEngine_nativeFreeTokenizer(
     _env: JNIEnv,
@@ -38,6 +44,12 @@ pub unsafe extern "system" fn Java_dev_corvus_laya_LayaNativeEngine_nativeFreeTo
     }
 }
 
+/// Encodes text into a tokenized batch.
+///
+/// # Safety
+///
+/// `handle` must be a valid pointer to a `LayaTokenizer` previously initialized by
+/// `Java_dev_corvus_laya_LayaNativeEngine_nativeInitTokenizer` or 0.
 #[no_mangle]
 pub unsafe extern "system" fn Java_dev_corvus_laya_LayaNativeEngine_nativeEncode(
     mut env: JNIEnv,
@@ -68,10 +80,14 @@ pub unsafe extern "system" fn Java_dev_corvus_laya_LayaNativeEngine_nativeEncode
     let input_ids_arr = env.new_long_array(batch.input_ids.len() as jint).unwrap();
     let _ = env.set_long_array_region(&input_ids_arr, 0, &batch.input_ids);
 
-    let att_arr = env.new_long_array(batch.attention_mask.len() as jint).unwrap();
+    let att_arr = env
+        .new_long_array(batch.attention_mask.len() as jint)
+        .unwrap();
     let _ = env.set_long_array_region(&att_arr, 0, &batch.attention_mask);
 
-    let type_arr = env.new_long_array(batch.token_type_ids.len() as jint).unwrap();
+    let type_arr = env
+        .new_long_array(batch.token_type_ids.len() as jint)
+        .unwrap();
     let _ = env.set_long_array_region(&type_arr, 0, &batch.token_type_ids);
 
     let mask_arr = env.new_int_array(batch.mask_indices.len() as jint).unwrap();
@@ -94,6 +110,11 @@ pub unsafe extern "system" fn Java_dev_corvus_laya_LayaNativeEngine_nativeEncode
     }
 }
 
+/// Calibrates raw logits using temperature scaling.
+///
+/// # Safety
+///
+/// `raw_logits` must be a valid JNI float array reference or null.
 #[no_mangle]
 pub unsafe extern "system" fn Java_dev_corvus_laya_LayaNativeEngine_nativeCalibrateLogits(
     env: JNIEnv,
